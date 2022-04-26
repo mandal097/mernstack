@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const User = require('../../../models/user');
+const User = require('../../../../models/user');
 const bcrypt = require('bcryptjs');
-const generateToken = require('../../../helpers/genrateToken');
+const generateToken = require('../../../../helpers/genrateToken');
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -28,6 +28,7 @@ router.post('/login', async (req, res) => {
                 } else {
                     const accessToken = generateToken({ id: user._id, email: email })
                     const obj = {
+                        id: user._id,
                         name: user.name,
                         email: user.email
                     }

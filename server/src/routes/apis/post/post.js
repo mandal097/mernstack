@@ -2,11 +2,11 @@ const Post = require('../../../models/posts');
 
 const router = require('express').Router();
 
-
+// creating posts ------------------------------
 router.post('/create-post', async (req, res) => {
-    const { title, body, photo } = req.body;
+    const { body, photo } = req.body;
     try {
-        if (!title || !body) {
+        if (!body) {
             res.status(404).json({
                 status: 'err',
                 msg: 'Please add all fields'
@@ -14,8 +14,7 @@ router.post('/create-post', async (req, res) => {
         } else {
             const { id } = req.user;
             const post = await Post({
-                title,
-                body,   
+                body,
                 photo,
                 postedBy: id
             })
@@ -34,5 +33,30 @@ router.post('/create-post', async (req, res) => {
         })
     }
 })
+
+
+
+
+// for deleting the Post----------------------
+router.delete('/:id', async (req, res) => {
+    try {
+        const post = await Post.findByIdAndDelete(req.params.id)
+
+        res.status(201).json({
+            status: 'success',
+            msg: "Deleted  Successfully",
+            commentedBy: post
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'err',
+            msg: "here an error"
+        })
+    }
+})
+
+
+
 
 module.exports = router;

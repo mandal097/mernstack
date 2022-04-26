@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Box } from '@mui/material'
 import styled from '@emotion/styled'
-import { images } from '../dummydata/images'
-const MyPost = () => {
-    const [posts, setPosts] = useState([]);
-
-    useEffect(() => {
-        setPosts(images)
-    }, [])
-
+const MyPost = ({ myPosts }) => {
 
     return (
         <MyPostBox>
             {
-                posts.map(p => (
+                myPosts.map(p => (
                     <ImgBox key={p.id}>
                         <Image
-                            src={p.img}
+                            src={p.photo}
                             alt='posts of mandal' />
                     </ImgBox>
                 ))

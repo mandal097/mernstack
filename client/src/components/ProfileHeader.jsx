@@ -3,7 +3,12 @@ import { Box, Grid, Stack, Typography, Button, IconButton } from '@mui/material'
 import styled from '@emotion/styled'
 import SettingsIcon from '@mui/icons-material/Settings';
 
-const ProfileHeader = () => {
+// import { useSelector } from 'react-redux';
+
+
+const ProfileHeader = ({myPosts}) => {
+    // const user = useSelector((state) => state.user.currentUser);
+
     return (
         <Grid container spacing={2}
             sx={{ borderBottom: '1px solid rgba(0,0,0,0.3)', paddingBottom: 2 }}
@@ -31,7 +36,7 @@ const ProfileHeader = () => {
                     </Grid>
 
                     <Stack direction='row' mt={3} gap={3}>
-                        <InfoButtons size="large"><Span>1</Span> post</InfoButtons>
+                        <InfoButtons size="large"><Span>{myPosts.length}</Span> post</InfoButtons>
                         <InfoButtons size="large"><Span>147</Span> Followers</InfoButtons>
                         <InfoButtons size="large"><Span>235</Span> Followings</InfoButtons>
                     </Stack>

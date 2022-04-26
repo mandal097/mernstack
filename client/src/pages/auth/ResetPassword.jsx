@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Box, Typography, InputLabel, TextField, Stack, InputBase } from '@mui/material';
 import { styled } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
+import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
-    const navigate = useNavigate()
-
-    const [name, setName] = useState();
-    const [email, setEmail] = useState();
+const Login = () => {
+    const navigate = useNavigate();
     const [password, setPassword] = useState();
+    const [loading, setLoading] = useState(false);
+    const [show, setShow] = useState(false);
 
-    const [show, setShow] = useState(false)
+    const user = useSelector((state) => state.user.currentUser)
+    console.log(user.id);
 
     const toggle = () => {
         switch (show) {
@@ -30,29 +30,44 @@ const Register = () => {
         }
     }
 
-
     const submitForm = async (e) => {
-        if (!name || !email || !password) {
+        e.preventDefault();
+        if (!password) {
             toast.error('please fill all the fields');
-        } else {
-            e.preventDefault();
-            const url = 'http://localhost:5000/api/user/registration'
-            const userDetails = {
-                name: name,
-                email: email,
-                password
+        }
+        try {
+            setLoading(true)
+            const url = 'http://localhost:5000/api/user/reset-password'
+            const details = {
+                password: password
+
             }
             const options = {
                 url: url,
                 method: 'POST',
-                headers: {},
-                data: userDetails
+                headers: {
+                    token: `Bearer ${localStorage.getItem('token')}`
+                },
+                data: details
             }
 
-            await axios(options)
-            toast.success('Registered Successfully');
+            const res = await axios(options);
+            console.log(res);
+            if (res.data.status === 'success') {
+                toast.success('Successfully changed your password');
+                setTimeout(() => {
+                    navigate(-1)
+                }, 1200);
+            } else {
+                toast.error('Something went wrong')
+            }
+            setLoading(false)
+        } catch {
+            toast.error('Something went wrong')
         }
     }
+
+
 
     return (
         <Box
@@ -65,39 +80,19 @@ const Register = () => {
                 justifyContent: "center"
             }}
         >
-
             <ToastContainer />
-
-            <form onSubmit={submitForm}>
+            <form onSubmit={(e) => submitForm(e)}>
                 <Stack
                     sx={{
                         width: 450,
                         height: 'auto',
                         backgroundColor: 'primary',
-                        border: '1px solid gray',
+                        border: '1px solid grey',
                         borderRadius: 2,
                         padding: "15px 20px",
                     }}
                 >
-                    <Typography variant='h5' textAlign='center' mb={1}>Social Media</Typography>
-
-                    <InputLabel>Name :</InputLabel>
-                    <TextField
-                        fullWidth
-                        type='name'
-                        required={true}
-                        placeholder='eg. Amarnath'
-                        onChange={(e) => setName(e.target.value)}
-                    />
-
-                    <InputLabel sx={{ marginTop: "20px" }}>Email :</InputLabel>
-                    <TextField
-                        fullWidth
-                        required={true}
-                        type='email'
-                        placeholder='example@mail.com'
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <Typography variant='h5' mb={1} sx={{ textAlign: 'center' }} >Reset Password</Typography>
 
                     <InputLabel sx={{ marginTop: "20px" }}>Password :</InputLabel>
                     <TextField
@@ -107,12 +102,13 @@ const Register = () => {
                         placeholder='write your password'
                         onChange={(e) => setPassword(e.target.value)}
                     />
+
                     <Typography
                         variant='span'
                         color='primary'
-                        mt={2}
+                        mt={1}
                         sx={{
-                            marginLeft: 'auto',
+                            marginRight: 'auto',
                             fontSize: '12px',
                             cursor: 'pointer',
                             "&:hover": {
@@ -121,37 +117,20 @@ const Register = () => {
                         }}
                         onClick={toggle}
                     > {show ? 'Hide' : 'Show'}</Typography>
-                    <SubmitButton>
+
+                    <SubmitButton sx={{ cursor: 'pointer' }}>
                         <InputBase
                             fullWidth
                             type='submit'
                             mt={2}
-                            value='Submit'
-                            sx={{ color: 'white' }}
+                            value={loading ? "Loading" : 'Submit'}
+                            sx={{ color: 'white', cursor: 'pointer' }}
+
                         />
                     </SubmitButton>
-                    <Typography variant='p'
-                        sx={{
-                            marginTop: '20px',
-                            textAlign: 'center',
-                            fontSize: '13px'
-                        }}
-                    >Already have an Account ?
-                        <Typography variant='span'
-                            color='primary'
-                            sx={{
-                                cursor: 'pointer',
-                                marginLeft: '7px',
-                                fontSize: '16px'
-                            }}
-                            onClick={(e) => {
-                                navigate('/login')
-                            }}
-                        >Login</Typography>
-                    </Typography>
                 </Stack>
             </form>
-        </Box >
+        </Box>
     )
 }
 
@@ -166,4 +145,4 @@ const SubmitButton = styled('div')({
     cursor: 'pointer'
 })
 
-export default Register
+export default Login

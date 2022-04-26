@@ -13,10 +13,18 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    followings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 }, { timestamps: true })
 
-const User = new mongoose.model('User' , userSchema);
+const User = new mongoose.model('User', userSchema);
 
 module.exports = User;
 

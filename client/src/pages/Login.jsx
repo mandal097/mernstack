@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { Box, Typography, InputLabel, TextField, Stack, InputBase } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+// import axios from 'axios';
 
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { login } from '../redux/api/login';
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -36,25 +39,26 @@ const Login = () => {
       toast.error('please fill all the fields');
     } else {
       e.preventDefault();
-      const userDetails = {
-        email: email,
-        password: password
-      }
-      const url = 'http://localhost:5000/api/user/login'
-      const options = {
-        url: url,
-        method: 'POST',
-        headers: {},
-        data: userDetails
-      }
-      const res = await axios(options)
+      // const userDetails = {
+      //   email: email,
+      //   password: password
+      // }
+      // const url = 'http://localhost:5000/api/user/login'
+      // const options = {
+      //   url: url,
+      //   method: 'POST',
+      //   headers: {},
+      //   data: userDetails
+      // }
+      // const res = await axios(options)
       toast.success('Logged in Successfully');
-      console.log(res.data);
-      console.log(res.data.status);
+
+      // localStorage.setItem('token', res.data.token);
+
+      // console.log(res.data.status);
+      login(dispatch, { email, password })
     }
   }
-
-
 
 
   return (
@@ -69,7 +73,7 @@ const Login = () => {
       }}
     >
       <ToastContainer />
-      <form onSubmit={submitForm}>
+      <form onSubmit={(e) => submitForm(e)}>
         <Stack
           sx={{
             width: 450,
@@ -111,7 +115,14 @@ const Login = () => {
             }}
             onClick={toggle}
           > {show ? 'Hide' : 'Show'}</Typography>
-          <Typography variant='p' mt={1} color='primary' sx={{ fontSize: '13px', marginLeft: 'auto', cursor: "pointer" }}>Forgot Password ?</Typography>
+          <Typography
+           variant='p'
+            mt={1} color='primary' 
+            sx={{ fontSize: '13px', marginLeft: 'auto', cursor: "pointer" }}
+            onClick={()=>{
+              navigate('/send-otp')
+            }}
+            >Forgot Password ?</Typography>
           <SubmitButton>
             <InputBase
               fullWidth
