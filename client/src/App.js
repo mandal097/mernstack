@@ -34,7 +34,7 @@ const App = () => {
               <Route index element={user ? <Home setMode={setMode} mode={mode} /> : <Navigate to='login' />} />
               <Route path='/login' element={user ? <Navigate to='/' /> : <Login />} />
               <Route path='/register' element={user ? <Navigate to='/' /> : <Register />} />
-              <Route path='/profile' element={user ? <Profile /> : <Navigate to='/login' />} />
+              <Route path='/profile/:id' element={user ? <Profile /> : <Navigate to='/login' />} />
               <Route path='/edit-profile' element={user && <EditProfile />} />
               <Route path='/reset-password' element={user && <ResetPassword />} />
               <Route path='/send-otp' element={!user && <SendOtp />} />

@@ -12,6 +12,7 @@ const deleteUser = require('./auth/deleteUser')
 const resetPassword = require('./auth/resetPassword')
 const forgotPassword = require('./auth/forgotPassword')
 const followers = require('./connections')
+const searchUser = require('./searchUser')
 
 
 
@@ -22,6 +23,8 @@ router.use('/user', login)
 router.use('/user', getProfile)
 
 router.use('/user', forgotPassword)
+
+router.use('/user/search', searchUser)
 
 router.use('/user', auth, getUser)
 

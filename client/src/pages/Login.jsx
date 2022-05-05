@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, InputLabel, TextField, Stack, InputBase } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import axios from 'axios';
 
 
@@ -18,6 +18,10 @@ const Login = () => {
   const [password, setPassword] = useState();
 
   const [show, setShow] = useState(false)
+
+
+  const isFetching = useSelector(state => state.user.isFetching)
+  console.log(isFetching);
 
   const toggle = () => {
     switch (show) {
@@ -39,23 +43,7 @@ const Login = () => {
       toast.error('please fill all the fields');
     } else {
       e.preventDefault();
-      // const userDetails = {
-      //   email: email,
-      //   password: password
-      // }
-      // const url = 'http://localhost:5000/api/user/login'
-      // const options = {
-      //   url: url,
-      //   method: 'POST',
-      //   headers: {},
-      //   data: userDetails
-      // }
-      // const res = await axios(options)
       toast.success('Logged in Successfully');
-
-      // localStorage.setItem('token', res.data.token);
-
-      // console.log(res.data.status);
       login(dispatch, { email, password })
     }
   }
@@ -116,19 +104,19 @@ const Login = () => {
             onClick={toggle}
           > {show ? 'Hide' : 'Show'}</Typography>
           <Typography
-           variant='p'
-            mt={1} color='primary' 
+            variant='p'
+            mt={1} color='primary'
             sx={{ fontSize: '13px', marginLeft: 'auto', cursor: "pointer" }}
-            onClick={()=>{
+            onClick={() => {
               navigate('/send-otp')
             }}
-            >Forgot Password ?</Typography>
+          >Forgot Password ?</Typography>
           <SubmitButton>
             <InputBase
               fullWidth
               type='submit'
               mt={2}
-              value='Submit'
+              value={isFetching ? "Logging in..." : 'Submit'}
               sx={{ color: 'white' }}
             />
           </SubmitButton>

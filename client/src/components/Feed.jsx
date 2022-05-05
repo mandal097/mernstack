@@ -10,10 +10,11 @@ const Feed = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
+            const token = localStorage.getItem('token')
             const url = 'http://localhost:5000/api/post/get-all-posts'
             const res = await axios.get(url, {
                 headers: {
-                    token: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjNiN2I2OWMwOWIyNjI5MDQyMDllMyIsImVtYWlsIjoibWFuZGFsYW1hcm5hdGhrdW1hcjhAZ21haWwuY29tIiwiaWF0IjoxNjUwODA0NTY3LCJleHAiOjE2NTE2Njg1Njd9.TQ_X2DqFDft3ad5wf8is61YqXJDHSp7IcImCeJigS5s`
+                    token: `Bearer ${token}`
                 }
             })
             setPosts(res.data.posts);

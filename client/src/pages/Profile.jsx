@@ -27,7 +27,6 @@ const Profile = () => {
     fetchPosts()
   }, [])
 
-  console.log(myPosts.length);
 
   return (
     <>
@@ -48,11 +47,9 @@ const Profile = () => {
             margin: '10px auto'
           }}
         >
-
           <MyPost myPosts={myPosts} />
         </Box>
         <Footer />
-
       </Container>
     </>
   )

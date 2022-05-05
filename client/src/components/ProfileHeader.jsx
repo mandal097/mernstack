@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Grid, Stack, Typography, Button, IconButton } from '@mui/material'
 import styled from '@emotion/styled'
 import SettingsIcon from '@mui/icons-material/Settings';
+import FriendsList from './FriendsList';
 
 // import { useSelector } from 'react-redux';
 
 
-const ProfileHeader = ({myPosts}) => {
+const ProfileHeader = ({ myPosts }) => {
     // const user = useSelector((state) => state.user.currentUser);
+    const [open, setOpen] = useState(false);
+    const [endPoint, setEndpoint] = useState('followers')
 
     return (
         <Grid container spacing={2}
@@ -37,12 +40,25 @@ const ProfileHeader = ({myPosts}) => {
 
                     <Stack direction='row' mt={3} gap={3}>
                         <InfoButtons size="large"><Span>{myPosts.length}</Span> post</InfoButtons>
-                        <InfoButtons size="large"><Span>147</Span> Followers</InfoButtons>
-                        <InfoButtons size="large"><Span>235</Span> Followings</InfoButtons>
+                        <InfoButtons size="large"
+                            onClick={() => {
+                                setEndpoint('followers');
+                                setOpen(true)
+                            }}
+                        ><Span>147</Span> Followers</InfoButtons>
+                        <InfoButtons size="large"
+                            onClick={() => {
+                                setEndpoint('followings');
+                                setOpen(true)
+                            }}
+                        ><Span>235</Span> Followings</InfoButtons>
                     </Stack>
                     <Typography mt={3} variant='p'>Amarnath Kumar Mandal</Typography>
                 </Stack>
             </Grid>
+            {
+                open && <FriendsList open={open} setOpen={setOpen} endPoint={endPoint} />
+            }
         </Grid>
     )
 }

@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
         const post = await Post.findById(req.params.id).populate("comments.commentedBy", "_id name")
         res.status(201).json({
             status: 'success',
-            msg: "Commented Successfully",
+            msg: "fetched Successfully",
             commentedBy: post
         })
 

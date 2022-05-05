@@ -1,18 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box } from '@mui/material'
 import styled from '@emotion/styled'
+import PostDetails from './PostDetails.'
 const MyPost = ({ myPosts }) => {
+    const [open, setOpen] = useState(false)
+    const [details, setDetails] = useState();
 
     return (
         <MyPostBox>
             {
                 myPosts.map(p => (
-                    <ImgBox key={p.id}>
-                        <Image
-                            src={p.photo}
-                            alt='posts of mandal' />
-                    </ImgBox>
+                    <>
+                        <ImgBox key={p.body} onClick={() => {
+                            setDetails(p)
+                            setOpen(true)
+                        }}>
+                            <Image
+                                src={p.photo}
+                                alt='posts of mandal' />
+                        </ImgBox>
+                    </>
                 ))
+            }
+            {
+                open && <PostDetails open={open} setOpen={setOpen} post={details} />
             }
         </MyPostBox>
     )
@@ -24,7 +35,8 @@ const MyPostBox = styled(Box)({
     display: 'flex',
     alignItems: "center",
     justifyContent: "center",
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    cursor: 'pointer'
 })
 
 
